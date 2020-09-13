@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)http://aa.ssdi.di.fct.unl.pt/Lectures/lec/05-logistic-overfitting.html#/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+
+		<title>AA-05</title>
+
+		<meta name="description" content="Lecture slides, Python">
+		<meta name="author" content="Ludwig Krippahl">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = 'css/aa.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );		
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';			
+			link.href = '../../reveallib/reveal/lib/css/atelier-dune-light.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );					
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = 'css/pdf.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );									
+			} else {
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = '../../reveallib/reveal/css/reveal.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );					
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = 'css/aa.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );		
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';			
+			link.href = '../../reveallib/reveal/lib/css/atelier-dune-light.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );												
+			}
+		</script><link rel="stylesheet" type="text/css" href="./lecture-5_files/reveal.css"><link rel="stylesheet" type="text/css" href="./lecture-5_files/aa.css"><link rel="stylesheet" type="text/css" href="./lecture-5_files/atelier-dune-light.css">
+  	</head>
+
+	<body>
+
+		<div class="reveal slide" role="application" data-transition-speed="default" data-background-transition="fade">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides" style="width: 1024px; height: 768px;">
+            
+            
+
+	<section data-transition="slide" data-background-image="img/first.png" data-background-size="100% 100%" data-background-transition="slide" class="present" style="display: block;">
+                  <!--<sn></sn>-->
+				<h2 class="right">Aprendizagem Automática</h2>
+					<h1>5. Overfitting and Classification</h1>				
+				<div class="author"><h3>Ludwig Krippahl</h3></div>
+                
+
+				<!--<div style="border:solid black; margin:0px; position:fixed; left:0px; top:0px; width:1024px;height:768px"></div>-->
+				
+    </section>
+	<section data-transition="slide-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: block;">
+                  <sn></sn>
+				<h2>Overfitting and Classification</h2>
+        
+<h3>Summary</h3>
+<ul><li>Scoring classifiers</li>
+<li>Cross validation</li>
+<li>Logistic regression: model selection and regularization</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: block;">
+                    <sn></sn>				
+                    <h2 class="right">Overfitting and Classification</h2>
+					<h1>Scoring classifiers</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Scoring classifiers</h2>
+        
+<h3>Scoring binary classifiers</h3>
+<ul><li>For regression, sum of squared distance to the line was useful:</li>
+  $$E(\theta|\mathcal{X})=\sum_{t=1}^{n} [y^t - g(x^t|\theta)]^2$$
+<li>With Logistic Regression the function to minimize is:</li>
+  $$E(\widetilde{w}) = - \sum_{n=1}^{N} \left[ t_n \ln g_n + (1-t_n) \ln (1-g_n) \right]$$
+  $$g_n = \frac{1}{1+e^{-(\vec{w}^T\vec{x_n}+w_0)}}$$
+<li>(Regression to the probability of belonging to $C_1$)</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Scoring classifiers</h2>
+        
+<h3>Scoring binary classifiers</h3>
+<ul><li>How good is the hypothesis?</li>
+<li>The <highlt>logistic loss</highlt> or cross entropy function</li>
+		$$L(\widetilde{w}) = \frac{1}{N} \sum_{n=1}^{N} H (p_n,q_n) = -\frac{1}{N}\sum \left[t_n \ln g_n + (1-t_n) \ln (1-g_n) \right]$$
+<li>&nbsp;<highlt>Brier score</highlt>: average quadratic error between the predicted probability and the class.</li>
+		$$E(\widetilde{w})=\frac{1}{N}\sum_{n=1}^{N} [t_n - g_n]^2$$
+<li>Note: this is not a quadratic error to the discriminant but to the predicted probability.</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Scoring classifiers</h2>
+        
+<h3>Scoring binary classifiers</h3>
+<ul><li>Brier score: error between $g_n$ and $t_n$</li>
+</ul>
+<p class="center"><img src="./lecture-5_files/L05-points_plane.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Scoring classifiers</h2>
+        
+<h3>Scoring binary classifiers</h3>
+<ul><li>Confusion matrix:</li>
+  <table>
+		<thead>
+		<tr><th></th><th colspan="2">Example Class</th></tr>
+		<tr><th>Prediction</th><th>Class 1</th><th>Class 0</th></tr>
+		</thead>
+		<tbody>
+		<tr><td>Class 1</td><td>True Positive</td><td>False Positive</td></tr>
+		<tr><td>Class 0</td><td>False Negative</td><td>True Negative</td></tr>
+		</tbody>
+		</table>
+  <br><br>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Scoring classifiers</h2>
+        
+<h3>Scoring binary classifiers</h3>
+  <br>
+		$$ accuracy = \frac{true\ positives + true\ negatives}{N}$$
+  <br>
+		$$precision = \frac{true\ positives}{true\ positives + false\ positives}$$
+  <br>
+		$$recall = \frac{true\ positives}{true\ positives + false\ negatives}$$
+
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Scoring classifiers</h2>
+        
+<h3>Scoring binary classifiers</h3>
+<ul><li>F1 Score: harmonic mean of precision and recall</li>
+  <br>
+		$$F_1 = 2 \times \frac{precision \times recall}{precision + recall}$$
+  <br>
+		$$F_1 = \frac{2 \times true\ positives}{2 \times true\ pos. + false\ pos. + false\ neg.}$$
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Scoring classifiers</h2>
+        
+<div class="wrapper"> <div class="wrapleft" style="flex:0 0 35%;">
+        
+<h3>Binary Classifiers</h3>
+   <br>
+			<p>Tipically, consider $g_n\geq 0.5$ for predicting Class 1</p>
+   <br>
+			<p>More generally, consider $g_n\geq \alpha,\ \alpha \in [0,1]$</p>
+
+        </div>
+        
+<div class="wrapright" style="flex:0 0 70%;">
+        
+<p class="center"><img src="./lecture-5_files/L05-ROC-gradient-contours.png" height="550"></p>
+
+        </div></div>
+        
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Scoring classifiers</h2>
+        
+<div class="wrapper"> <div class="wrapleft" style="flex:0 0 35%;">
+        
+<h3>Binary Classifiers</h3>
+   <br>
+			<p>Tipically, consider $g_n\geq 0.5$ for predicting Class 1</p>
+   <br>
+			<p>More generally, consider $g_n\geq \alpha,\ \alpha \in [0,1]$</p>
+   <br>
+   <p>As $\alpha$ changes, the number of false and true positives also changes</p>
+
+        </div>
+        
+<div class="wrapright" style="flex:0 0 70%;">
+        
+<p class="center"><img src="./lecture-5_files/L05-ROC-TPFPvsThresh.png" height="550"></p>
+
+        </div></div>
+        
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Scoring classifiers</h2>
+        
+<div class="wrapper"> <div class="wrapleft" style="flex:0 0 40%;">
+        
+<h3>Receiver Operating Characteristic</h3>
+   <br>
+			<p>Plot true pos. vs false pos. for different $\alpha$</p>
+   <br>
+   <p>We can use area under the <highlt>ROC</highlt> curve as a possible score for binary classifier.</p>
+
+        </div>
+        
+<div class="wrapright" style="flex:0 0 65%;">
+        
+<p class="center"><img src="./lecture-5_files/L05-ROC.png" height="500"></p>
+
+        </div></div>
+        
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Scoring classifiers</h2>
+        
+<h3>Scoring binary classifiers</h3>
+<ul><li>Logistic Regression: Loss function, Brier score</li>
+<li>Precision, Recall, Accuracy</li>
+<li>Confusion Matrix</li>
+<li>Receiver Operating Characteristic curve</li>
+  <br>
+<li>Classifiers in Scikit Learn include a score method</li>
+<ul><li>Returns accuracy, the fraction of correctly classified examples</li>
+</ul></ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+from sklearn.linear_model import LogisticRegression
+
+reg = LogisticRegression()
+reg.fit(X_r,Y_r)
+test_error = 1-reg.score(X_t,Y_t)
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Overfitting and Classification</h2>
+					<h1>Cross-Validation</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Cross-Validation</h2>
+        
+<h3>Train, Validate, Test</h3>
+<ul><li>Previously, we saw:</li>
+<ul><li>Minimize <highlt>Training Error</highlt> to generate hypothesis</li>
+<li>Measure <highlt>Validation Error</highlt> on hypothesis to select</li>
+<li>Measure <highlt>Test Error</highlt> to estimate <highlt>True Error</highlt></li>
+</ul><li>Problem: select model based on one estimate (one hypothesis)</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Cross-Validation</h2>
+        <ul><li>Each train and validation split is one sample</li>
+</ul>
+<p class="center"><img src="./lecture-5_files/L03-poly-5-splits.png" height="500"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Cross-Validation</h2>
+        
+<h3>Average hypotheses from the same class (model)</h3>
+<ul><li>Split data into <highlt>Training Set</highlt> and <highlt>Test Set</highlt></li>
+<ul><li>The Test Set is for an unbiased estimate of the true error of the final hypothesis</li>
+</ul><li>Validate with average of K hypotheses</li>
+<ul><li>Split Training Set into K folds</li>
+<li>Average K validations: each fold after training on the other K-1 folds</li>
+
+</ul></ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Cross-Validation</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-xfold-1.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Cross-Validation</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-xfold-2.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Cross-Validation</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-xfold-3.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Cross-Validation</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-xfold-4.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Cross-Validation</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-xfold-5.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Cross-Validation</h2>
+        
+<h3>Train+Validation vs Cross-Validation</h3>
+<ul><li>With training and validation we estimate the true error of an hypothesis</li>
+<ul><li>We then use these estimates to select the best hipothesis from different models</li>
+</ul><li>With cross-validation we average the estimated true error of several hypotheses</li>
+<ul><li>This gives us a better estimate of the true error for that model, on average, on this kind of data</li>
+<li>But does not give an estimate of the true error of any specific hypothesis</li>
+
+</ul></ul>
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Cross-Validation</h2>
+        
+<h3>K-fold Cross-Validation</h3>
+<ul><li>Split points into K folds</li>
+<ul><li>With N folds: <highlt>leave-one-out</highlt> cross-validation.</li>
+</ul></ul>
+<h3>Cross-Validation and Testing</h3>
+<ul><li>Possible problem: class imbalance.</li>
+<li>Unless large data set, class proportions may change in folds or training and test.</li>
+<ul><li>Use <highlt>Stratified sampling</highlt>: random sampling that preserves proportions.</li>
+
+</ul></ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Overfitting and Classification</h2>
+					<h1>Example</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        <ul><li>Find the best model for classifying these data:</li>
+</ul>
+<p class="center"><img src="./lecture-5_files/L05-logdata.png" height="500"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<h3>Load, shuffle, standardize features:</h3>
+
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+import numpy as np
+from sklearn.utils import shuffle
+
+mat = np.loadtxt('dataset_90.txt',delimiter=',')
+data = shuffle(mat)
+Ys = data[:,0]
+Xs = data[:,1:]
+means = np.mean(Xs,axis=0)
+stdevs = np.std(Xs,axis=0)
+Xs = (Xs-means)/stdevs
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<h3>We want to select the best model expanding the data:</h3>
+		$$\{x_1, x_2\}$$
+		$$\{x_1, x_2, x_1\times x_2\}$$
+		$$\{x_1, x_2, x_1\times x_2, x_1^2\}$$
+		$$...$$
+
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+def poly_16features(X):
+    """Expand data polynomially
+    """
+    X_exp = np.zeros((X.shape[0],X.shape[1]+14))
+    X_exp[:,:2] = X
+    X_exp[:,2] = X[:,0]*X[:,1]
+    X_exp[:,3] = X[:,0]**2
+    X_exp[:,4] = X[:,1]**2
+    X_exp[:,5] = X[:,0]**3
+    X_exp[:,6] = X[:,1]**3
+    X_exp[:,7] = X[:,0]**2*X[:,1]
+    X_exp[:,8] = X[:,1]**2*X[:,0]
+    #... rest of the expansion here
+    return X_exp
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<h3>Expand and split (stratified):</h3>
+
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+from sklearn.model_selection import train_test_split
+
+Xs=poly_16features(Xs)
+X_r,X_t,Y_r,Y_t = train_test_split(Xs, Ys, test_size=0.33, stratify = Ys)
+		</code></pre>
+<h3>Generate the fold indexes with KFold (example)</h3>
+
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+from sklearn.model_selection import KFold
+
+x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+kf = KFold(n_splits=4)
+for train, valid in kf.split(x):
+    print (train, valid)
+		</code></pre>
+    <pre><code data-trim="" contenteditable="" class="python hljs console">
+[ 3  4  5  6  7  8  9 10 11] [0 1 2]
+[ 0  1  2  6  7  8  9 10 11] [3 4 5]
+[ 0  1  2  3  4  5  9 10 11] [6 7 8]
+[ 0  1  2  3  4  5  6  7  8] [9 10 11]
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<h3>Stratified k-folds:</h3>
+<ul><li>Tries to keep the same distribution of classes in each fold</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+from sklearn.model_selection import StratifiedKFold
+ys = [1,1,0,1,0,1,0,1,0,1,1,1]
+kf = StratifiedKFold(n_splits=4)
+for train,valid in kf.split(ys,ys):
+    print(train,valid)
+		</code></pre>
+    <pre><code data-trim="" contenteditable="" class="python hljs console">
+[ 3  4  5  6  7  8  9 10 11] [0 1 2]
+[ 0  1  2  6  7  8  9 10 11] [3 4 5]
+[ 0  1  2  3  4  5  8 10 11] [6 7 9]
+[ 0  1  2  3  4  5  6  7  9] [8 10 11]
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        <ul><li>Compute train and validation Brier error: (assumes classes 0,1)</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+from sklearn.linear_model import LogisticRegression
+
+def calc_fold(feats, X,Y, train_ix,valid_ix,C=1e12):
+    """return error for train and validation sets"""
+    reg = LogisticRegression(C=C, tol=1e-10)
+    reg.fit(X[train_ix,:feats],Y[train_ix])
+    prob = reg.predict_proba(X[:,:feats])[:,1]
+    squares = (prob-Y)**2
+    return np.mean(squares[train_ix]),np.mean(squares[valid_ix])
+		</code></pre><ul><li>Generate folds and loop</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+folds = 10
+kf = StratifiedKFold(n_splits=folds)
+for feats in range(2,16):
+    tr_err = va_err = 0
+    for tr_ix,va_ix in kf.split(Y_r,Y_r):
+        r,v = calc_fold(feats,X_r,Y_r,tr_ix,va_ix)
+        tr_err += r
+        va_err += v
+    print(feats,':', tr_err/folds,va_err/folds)
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-logreg-2.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-logreg-3.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-logreg-4.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-logreg-6.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-logreg-9.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<p class="center"><img src="./lecture-5_files/L05-logreg-12.png" height="550"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        <ul><li>Cross-validation error (red), best model: 9 features</li>
+</ul>
+<p class="center"><img src="./lecture-5_files/L05-logreg-error.png" height="500"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        <ul><li>Retrain on whole training set, measure test error.</li>
+</ul>
+<p class="center"><img src="./lecture-5_files/L05-best_modsel.png" height="500"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Example</h2>
+        
+<h3>Model selection with cross-validation</h3>
+<ul><li>Preprocess: shuffle; normalize or standardize</li>
+<li>Reserve a <highlt>test set</highlt> (stratified?)</li>
+<li>Partition <highlt>training set</highlt> into n folds (stratified?)</li>
+<li>&nbsp;<highlt>Cross validation</highlt> to select the best model</li>
+<li>Train best model with all <highlt>training set</highlt></li>
+<li>Estimate true error of final hypothesis on <highlt>test set</highlt></li>
+<ul><li>Why?</li>
+<li>Cross-validation error is unbiased and could be a good estimate of the true error</li>
+<li>But becomes biased by using it (and those examples) to select the best model</li>
+
+</ul></ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Overfitting and Classification</h2>
+					<h1>Regularization</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Regularization</h2>
+        
+<h3>Logistic regression can be regularized</h3>
+<ul><li>For example, with L2 norm</li>
+  $$\lambda \sum_{j=1}^{m} w_j^2$$
+<li>LogisticRegression class offers a $C$ parameter:</li>
+  $$\frac{1}{C} \sum_{j=1}^{m} w_j^2$$
+
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Regularization</h2>
+        
+<h3>Ridge regression is intuitive:</h3>
+		$$y = \theta_1 x^2 + \theta_2 x + \theta_3$$
+		$$J(\theta) = \sum_{t=1}^{n} \left[ y^t - g(x^t|\theta) \right]^2 + \lambda \sum_{j=1}^{m} \theta_j^2$$
+
+<h3>In logistic regression this seems less intuitive:</h3>
+		$$g(\vec{x},\widetilde{w}) = \frac{1}{1+e^{-\widetilde{w}^T\vec{x}}}$$
+		$$\frac{1}{C} \sum_{j=1}^{m} w_j^2$$
+
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Regularization</h2>
+        
+<div class="wrapper"> <div class="wrapleft" style="flex:0 0 30%;">
+           <br><br><p>$$\widetilde{w}^T \vec{x} = 0$$</p>
+
+        </div>
+        
+<div class="wrapright" style="flex:0 0 70%;">
+        
+<p class="center"><img src="./lecture-5_files/L04-points_plane_arrow.png" height="550"></p>
+
+        </div></div>
+        
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Regularization</h2>
+        <ul><li>Large $\widetilde{w}$, steep logistic function</li>
+		$$g(\vec{x},\widetilde{w}) = \frac{1}{1+e^{-\widetilde{w}^T\vec{x}}}$$
+</ul>
+<p class="center"><img src="./lecture-5_files/L05-log2.png" height="400"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Regularization</h2>
+        <ul><li>A small $\widetilde{w}$ lowers the slope</li>
+		$$g(\vec{x},\widetilde{w}) = \frac{1}{1+e^{-\widetilde{w}^T\vec{x}}}$$
+</ul>
+<p class="center"><img src="./lecture-5_files/L05-log1.png" height="400"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Regularization</h2>
+        <ul><li>No regularization, overfitting</li>
+</ul>
+<p class="center"><img src="./lecture-5_files/L05-gradient_noreg.png" height="470"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Regularization</h2>
+        <ul><li>Regularization, large margins</li>
+</ul>
+<p class="center"><img src="./lecture-5_files/L05-gradient_reg.png" height="470"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Regularization</h2>
+        <ul><li>We'll use the 15 features model (overfitting)</li>
+</ul>
+<p class="center"><img src="./lecture-5_files/L05-logreg-error.png" height="450"><img src="./lecture-5_files/L05-logreg-15.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Regularization</h2>
+        
+<div class="wrapper"> <div class="wrapleft">
+           <p>Cross-val. error vs $log_{10}(C)$</p>
+
+<p class="center"><img src="./lecture-5_files/L05-logregul-error.png" height="470"></p>
+
+        </div>
+        
+<div class="wrapright">
+        			<p>15 features, $C=10^5$</p>
+
+<p class="center"><img src="./lecture-5_files/L05-best_regulariz.png" height="470"></p>
+
+        </div></div>
+        
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Note</h2>
+        
+<h3>Note on data expansion</h3>
+<ul><li>We are doing this manually to illustrate the idea</li>
+<li>In practice, we would use other classifiers (we'll see later)</li>
+
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Overfitting and Classification</h2>
+					<h1>Summary</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Overfitting and Classification</h2>
+        
+<h3>Summary</h3>
+<ul><li>Scoring and evaluating classifiers</li>
+<li>Cross-validation and model selection</li>
+<li>Cross-validation and regularization</li>
+<li>Stratified sampling: train, folds, test</li>
+</ul>
+<h3>Further reading</h3>
+<ul><li>Alpaydin Section 2.7</li>
+</ul>
+				
+    </section>
+    
+            
+        </div>
+
+		<script src="./lecture-5_files/head.min.js.download"></script>
+		<script src="./lecture-5_files/reveal.js.download"></script>
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false,
+				progress: false,
+				history: true,
+				center: false,
+				margin: 0,
+				width: 1024,
+				height: 768,
+				//width: '100%',
+				//height: '100%',
+                 touch: false,
+	            minScale: 1.0,
+				maxScale: 1.0,
+				slideNumber: false,
+
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: '../../reveallib/reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../../reveallib/reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../reveallib/reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../reveallib/reveal/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../../reveallib/reveal/plugin/zoom-js/zoom.js', async: true },
+					{ src: '../../reveallib/reveal/plugin/math/math.js', async: true },
+					{ src: '../../reveallib/reveal/plugin/notes/notes.js', async: true }
+				]
+			});
+         Reveal.configure({
+                keyboard: {
+                13: 'next', // go to the next slide when the ENTER key is pressed
+                40: 'next',
+                38: 'prev'
+                }
+            });       
+		</script><div class="backgrounds"><div class="slide-background present" data-background-hash="null100% 100%img/first.pngnullnullnullnullnullslide" data-background-transition="slide" data-loaded="true" style="background-size: 100% 100%; display: block; background-image: url(&quot;img/first.png&quot;);"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" data-loaded="true" style="background-size: 100% 100%; display: block; background-image: url(&quot;img/slide1.png&quot;);"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" data-loaded="true" style="background-size: 100% 100%; display: block; background-image: url(&quot;img/transition.png&quot;);"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div></div><div class="progress" style="display: none;"><span></span></div><aside class="controls" style="display: none;"><div class="navigate-left"></div><div class="navigate-right enabled"></div><div class="navigate-up"></div><div class="navigate-down"></div></aside><div class="slide-number"></div><div class="pause-overlay"></div><div id="aria-status-div" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">
+                  
+				Aprendizagem Automática
+					5. Overfitting and Classification				
+				Ludwig Krippahl
+                
+
+				
+				
+    </div>
+
+	
+
+</div><script type="text/javascript" src="./lecture-5_files/highlight.js.download"></script><script type="text/javascript" src="./lecture-5_files/zoom.js.download"></script><script type="text/javascript" src="./lecture-5_files/math.js.download"></script><script type="text/javascript" src="./lecture-5_files/notes.js.download"></script></body></html>
