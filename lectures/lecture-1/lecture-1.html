@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)http://aa.ssdi.di.fct.unl.pt/Lectures/lec/01-intro.html#/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+
+		<title>AA-01</title>
+
+		<meta name="description" content="Lecture slides, Python">
+		<meta name="author" content="Ludwig Krippahl">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = 'css/aa.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );		
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';			
+			link.href = '../../reveallib/reveal/lib/css/atelier-dune-light.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );					
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = 'css/pdf.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );									
+			} else {
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = '../../reveallib/reveal/css/reveal.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );					
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = 'css/aa.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );		
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';			
+			link.href = '../../reveallib/reveal/lib/css/atelier-dune-light.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );												
+			}
+		</script><link rel="stylesheet" type="text/css" href="./lecture-1_files/reveal.css"><link rel="stylesheet" type="text/css" href="./lecture-1_files/aa.css"><link rel="stylesheet" type="text/css" href="./lecture-1_files/atelier-dune-light.css">
+  	<script type="text/javascript" src="./lecture-1_files/MathJax.js.download"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax:focus, body :focus .MathJax {display: inline-table}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_ExBox {display: block!important; overflow: hidden; width: 1px; height: 60ex; min-height: 0; max-height: none}
+.MathJax .MathJax_EmBox {display: block!important; overflow: hidden; width: 1px; height: 60em; min-height: 0; max-height: none}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Main; src: url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Regular.woff?rev=2.6.1') format('woff'), url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Main-Regular.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Main-bold; src: url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Bold.woff?rev=2.6.1') format('woff'), url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Main-Bold.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Main-italic; src: url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Italic.woff?rev=2.6.1') format('woff'), url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Main-Italic.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Math-italic; src: url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Math-Italic.woff?rev=2.6.1') format('woff'), url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Math-Italic.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Caligraphic; src: url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Caligraphic-Regular.woff?rev=2.6.1') format('woff'), url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Size1; src: url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size1-Regular.woff?rev=2.6.1') format('woff'), url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size1-Regular.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Size2; src: url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size2-Regular.woff?rev=2.6.1') format('woff'), url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size2-Regular.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Size3; src: url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size3-Regular.woff?rev=2.6.1') format('woff'), url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size3-Regular.otf?rev=2.6.1') format('opentype')}
+@font-face {font-family: MathJax_Size4; src: url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/woff/MathJax_Size4-Regular.woff?rev=2.6.1') format('woff'), url('http://aa.ssdi.di.fct.unl.pt/reveallib/mathjax/fonts/HTML-CSS/TeX/otf/MathJax_Size4-Regular.otf?rev=2.6.1') format('opentype')}
+.MathJax .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+	<body style="transition: -webkit-transform 0.8s ease 0s;"><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"></div></div><div id="MathJax_Message" style="display: none;"></div>
+
+		<div class="reveal slide" role="application" data-transition-speed="default" data-background-transition="fade">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides" style="width: 1024px; height: 768px;">
+            
+            
+
+	<section data-transition="slide" data-background-image="img/first.png" data-background-size="100% 100%" data-background-transition="slide" class="present" style="display: block;">
+                  <!--<sn></sn>-->
+				<h2 class="right">Aprendizagem Automática</h2>
+					<h1>1 - Introduction</h1>				
+				<div class="author"><h3>Ludwig Krippahl</h3></div>
+                
+
+				<!--<div style="border:solid black; margin:0px; position:fixed; left:0px; top:0px; width:1024px;height:768px"></div>-->
+				
+    </section>
+	<section data-transition="slide-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: block;">
+                  <sn></sn>
+				<h2>Introduction</h2>
+        
+<h3>Summary</h3>
+<ul><li>Course formalities</li>
+<li>Machine learning</li>
+<li>Course objectives and outline</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: block;">
+                    <sn></sn>				
+                    <h2 class="right">Introduction</h2>
+					<h1>Formalities</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Formalities</h2>
+        
+<h3>Instructors</h3>
+<ul><li>Lectures, P1, P6: Ludwig Krippahl</li>
+<li>P2 - P5: Francisco Azevedo</li>
+</ul>
+<h3>Course site: aa.ssdi.di.fct.unl.pt</h3>
+<ul><li>Slides, notes, lecture videos</li>
+</ul>
+<h3>Classes</h3>
+<ul><li>Lectures: 2 x 1h per week, ~70% exposition, ~30% discussion</li>
+<li>Tutorials: 1 x 2h per week</li>
+<ul><li>Questions about exercises and assignments</li>
+</ul><li>Some lectures reserved for revisions and assigments</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Formalities</h2>
+        
+<h3>Assessment</h3>
+<ul><li>Theoretical: 2 written tests or final exam.</li>
+<ul><li>One handwritten A4 sheet for notes</li>
+<li>Exam scored in two independent parts</li>
+</ul><li>Practical: 2 assignments, groups of 2 students in same class.</li>
+<ul><li>Plus individual written defense during the test.</li>
+</ul><li>Groups formed by October 7</li>
+<li>All submission to praticasice@gmail.com using official FCT address</li>
+<ul><li>NOTE: this address is for automated processing only</li>
+</ul><li>Evaluation</li>
+<ul><li>Required: minimum of 9.5 in each component.</li>
+<li>Final grade: simple average of the two components.</li>
+<li>If frequency from 2015/16 - 19, do not enroll in practical classes</li>
+</ul></ul>
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Formalities</h2>
+        
+<h3>Recommended Software</h3>
+<ul><li>Python 3.x, Spyder IDE</li>
+<li>Several libraries needed: NumPy, Matplotlib, Scikit-Learn, ...</li>
+<li>Simple instalation: Anaconda, https://www.anaconda.com/download</li>
+</ul>
+<h3>Bibliography</h3>
+<ul><li>&nbsp;<b>Lecture notes, available on web site</b></li>
+<li>&nbsp;<b>Bishop, Pattern Recognition and ML 2006</b></li>
+<li>Alpaydin, Introduction to ML (2nd ed.) 2010</li>
+<li>Marsland, Machine Learning, 2009</li>
+<li>Mitchell, Machine Learning, 1997</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Introduction</h2>
+					<h1>Machine Learning</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Machine Learning</h2>
+        <ul><li>Making sense of data.</li>
+</ul>
+<p>" Field of study that gives computers the ability to learn without being explicitly programmed"</p>
+
+<p style="text-align:right">(Samuel, 1959)</p>
+<ul><li>More formal, operational, definition:</li>
+</ul>
+<p>"A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P, if its performance at tasks in T, as measured by P, improves with experience E"</p>
+
+<p style="text-align:right">(Mitchell, 1997)</p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Machine Learning</h2>
+        
+<h3>Machine Learning problem</h3>
+<ul><li>A task that the system must perform.</li>
+<li>A measure of its performance</li>
+<li>The data used to improve its performance.</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Machine Learning</h2>
+        
+<h3>Example: automated flight ticketing</h3>
+<ul><li>Task: identify requests for flight information and tickets.</li>
+<li>Performance measure: correctly identified expressions.</li>
+<li>Data: Annotated voice records.</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="html hljs hljs "><span class="hljs-tag">&lt;<span class="hljs-title">book_flight</span>&gt;</span> please book me on <span class="hljs-tag">&lt;/<span class="hljs-title">book_flight</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">numflt</span>&gt;</span> flight twenty one <span class="hljs-tag">&lt;/<span class="hljs-title">numflt</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-title">i_want_to_go</span>&gt;</span> i would like to fly <span class="hljs-tag">&lt;/<span class="hljs-title">i_want_to_go</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">city_from</span>&gt;</span> from philadelphia <span class="hljs-tag">&lt;/<span class="hljs-title">city_from</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">city_to</span>&gt;</span> to dallas <span class="hljs-tag">&lt;/<span class="hljs-title">city_to</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-title">request1</span>&gt;</span> could you please list the <span class="hljs-tag">&lt;/<span class="hljs-title">request1</span>&gt;</span> flights
+<span class="hljs-tag">&lt;<span class="hljs-title">city_from</span>&gt;</span> from boston <span class="hljs-tag">&lt;/<span class="hljs-title">city_from</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-title">city_to</span>&gt;</span> to denver <span class="hljs-tag">&lt;/<span class="hljs-title">city_to</span>&gt;</span>
+on <span class="hljs-tag">&lt;<span class="hljs-title">date</span>&gt;</span> july twenty eighth <span class="hljs-tag">&lt;/<span class="hljs-title">date</span>&gt;</span></code></pre>
+<p style="position: absolute;top: 650px;right: 0;"> Source: Erdogan, Using semantic analysis to improve speech recognition performance</p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Machine Learning</h2>
+        
+<h3>Machine Learning problems</h3>
+<ul><li>Predicting prices (Regression)</li>
+<li>Classifying spam emails (Classification)</li>
+<li>Products purchased together (Association Rules)</li>
+<li>Grouping similar images (Clustering)</li>
+<li>Distributions in diagnosis (Density Estimation)</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Machine Learning</h2>
+        
+<h3>Relations to other disciplines</h3>
+<ul><li>Computer Science</li>
+<li>Statistics and Probability</li>
+<li>Mathematics</li>
+<li>Neuroscience</li>
+<li>Philosophy</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Introduction</h2>
+					<h1>What is Machine Learning for?</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Using ML</h2>
+        
+<h3>Solve problems without explicit rules</h3>
+<ul><li>Example: identify handwritten digits</li>
+</ul>
+<p class="center"><img src="./lecture-1_files/digits.png" height="300"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Using ML</h2>
+        
+<h3>Solve problems without explicit rules</h3>
+<ul><li>Train with labelled data</li>
+</ul>
+<p class="center"><img src="./lecture-1_files/digits-lbld.png" height="300"></p>
+<ul><li>Find a function for classifying</li>
+<ul><li>Partition the input space into the 10 classes (0..9)</li>
+
+</ul></ul>
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Using ML</h2>
+        
+<h3>Data mining</h3>
+<ul><li>Large volumes of data</li>
+<ul><li>Google searches</li>
+<li>Facebook relations graph</li>
+<li>Credit card fraud</li>
+</ul></ul>
+<h3>Adaptive systems</h3>
+<ul><li>Need to respond to changing conditions</li>
+<li>Personalization (e.g. Facebook feed)</li>
+<li>Spam filtering (email and comments)</li>
+</ul>
+<h3>ML is good for tasks we do not have a recipe for...</h3>
+<ul><li>... if we have the right data.</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Introduction</h2>
+					<h1>Basic Concepts</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Basic Concepts</h2>
+        
+<h3>Hypothesis class</h3>
+<ul><li>The set of possible hypotheses</li>
+<li>We need to assume something about the solution</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Basic Concepts</h2>
+        
+<h3>Hypothesis class</h3>
+<ul><li>Example: we want to separate red from blue</li>
+</ul>
+<p class="center"><img src="./lecture-1_files/l01-blobs.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Basic Concepts</h2>
+        
+<h3>Hypothesis class: horizontal lines</h3>
+<ul><li>Model: <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-1-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;&amp;#x2264;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;&amp;#x03B8;&lt;/mi&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/msub&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-1" role="math" style="width: 3.279em; display: inline-block;"><span style="display: inline-block; position: relative; width: 2.724em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.418em, 1002.72em, 2.474em, -999.999em); top: -2.193em; left: 0.001em;"><span class="mrow" id="MathJax-Span-2"><span class="mi" id="MathJax-Span-3" style="font-family: MathJax_Math-italic;">y<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.001em;"></span></span><span class="mo" id="MathJax-Span-4" style="font-family: MathJax_Main; padding-left: 0.279em;">≤</span><span class="msubsup" id="MathJax-Span-5" style="padding-left: 0.279em;"><span style="display: inline-block; position: relative; width: 0.89em; height: 0px;"><span style="position: absolute; clip: rect(3.224em, 1000.47em, 4.085em, -999.999em); top: -3.999em; left: 0.001em;"><span class="mi" id="MathJax-Span-6" style="font-family: MathJax_Math-italic;">θ</span><span style="display: inline-block; width: 0px; height: 4.001em;"></span></span><span style="position: absolute; top: -3.86em; left: 0.474em;"><span class="mn" id="MathJax-Span-7" style="font-size: 70.7%; font-family: MathJax_Main;">1</span><span style="display: inline-block; width: 0px; height: 4.001em;"></span></span></span></span></span><span style="display: inline-block; width: 0px; height: 2.196em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.265em; border-left: 0px solid; width: 0px; height: 1.168em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>y</mi><mo>≤</mo><msub><mi>θ</mi><mn>1</mn></msub></math></span></span><script type="math/tex" id="MathJax-Element-1">y \leq \theta_1 </script></li>
+</ul>
+<p class="center"><img src="./lecture-1_files/l01-blobs-hline.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Basic Concepts</h2>
+        
+<h3> Hypothesis class: circles of radius 1</h3>
+<ul><li>Model: <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-2-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;&amp;#x03B8;&lt;/mi&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/msub&gt;&lt;msup&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;&amp;#x03B8;&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msub&gt;&lt;msup&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;mo&gt;&amp;#x2264;&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-8" role="math" style="width: 12.89em; display: inline-block;"><span style="display: inline-block; position: relative; width: 10.724em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.279em, 1010.64em, 2.529em, -999.999em); top: -2.193em; left: 0.001em;"><span class="mrow" id="MathJax-Span-9"><span class="mo" id="MathJax-Span-10" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-11" style="font-family: MathJax_Math-italic;">x</span><span class="mo" id="MathJax-Span-12" style="font-family: MathJax_Main; padding-left: 0.224em;">−</span><span class="msubsup" id="MathJax-Span-13" style="padding-left: 0.224em;"><span style="display: inline-block; position: relative; width: 0.89em; height: 0px;"><span style="position: absolute; clip: rect(3.224em, 1000.47em, 4.085em, -999.999em); top: -3.999em; left: 0.001em;"><span class="mi" id="MathJax-Span-14" style="font-family: MathJax_Math-italic;">θ</span><span style="display: inline-block; width: 0px; height: 4.001em;"></span></span><span style="position: absolute; top: -3.86em; left: 0.474em;"><span class="mn" id="MathJax-Span-15" style="font-size: 70.7%; font-family: MathJax_Main;">1</span><span style="display: inline-block; width: 0px; height: 4.001em;"></span></span></span></span><span class="msubsup" id="MathJax-Span-16"><span style="display: inline-block; position: relative; width: 0.807em; height: 0px;"><span style="position: absolute; clip: rect(3.168em, 1000.31em, 4.335em, -999.999em); top: -3.999em; left: 0.001em;"><span class="mo" id="MathJax-Span-17" style="font-family: MathJax_Main;">)</span><span style="display: inline-block; width: 0px; height: 4.001em;"></span></span><span style="position: absolute; top: -4.36em; left: 0.39em;"><span class="mn" id="MathJax-Span-18" style="font-size: 70.7%; font-family: MathJax_Main;">2</span><span style="display: inline-block; width: 0px; height: 4.001em;"></span></span></span></span><span class="mo" id="MathJax-Span-19" style="font-family: MathJax_Main; padding-left: 0.224em;">+</span><span class="mo" id="MathJax-Span-20" style="font-family: MathJax_Main; padding-left: 0.224em;">(</span><span class="mi" id="MathJax-Span-21" style="font-family: MathJax_Math-italic;">y<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.001em;"></span></span><span class="mo" id="MathJax-Span-22" style="font-family: MathJax_Main; padding-left: 0.224em;">−</span><span class="msubsup" id="MathJax-Span-23" style="padding-left: 0.224em;"><span style="display: inline-block; position: relative; width: 0.89em; height: 0px;"><span style="position: absolute; clip: rect(3.224em, 1000.47em, 4.085em, -999.999em); top: -3.999em; left: 0.001em;"><span class="mi" id="MathJax-Span-24" style="font-family: MathJax_Math-italic;">θ</span><span style="display: inline-block; width: 0px; height: 4.001em;"></span></span><span style="position: absolute; top: -3.86em; left: 0.474em;"><span class="mn" id="MathJax-Span-25" style="font-size: 70.7%; font-family: MathJax_Main;">2</span><span style="display: inline-block; width: 0px; height: 4.001em;"></span></span></span></span><span class="msubsup" id="MathJax-Span-26"><span style="display: inline-block; position: relative; width: 0.807em; height: 0px;"><span style="position: absolute; clip: rect(3.168em, 1000.31em, 4.335em, -999.999em); top: -3.999em; left: 0.001em;"><span class="mo" id="MathJax-Span-27" style="font-family: MathJax_Main;">)</span><span style="display: inline-block; width: 0px; height: 4.001em;"></span></span><span style="position: absolute; top: -4.36em; left: 0.39em;"><span class="mn" id="MathJax-Span-28" style="font-size: 70.7%; font-family: MathJax_Main;">2</span><span style="display: inline-block; width: 0px; height: 4.001em;"></span></span></span></span><span class="mo" id="MathJax-Span-29" style="font-family: MathJax_Main; padding-left: 0.279em;">≤</span><span class="mn" id="MathJax-Span-30" style="font-family: MathJax_Main; padding-left: 0.279em;">1</span></span><span style="display: inline-block; width: 0px; height: 2.196em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.332em; border-left: 0px solid; width: 0px; height: 1.368em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><msub><mi>θ</mi><mn>1</mn></msub><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false">(</mo><mi>y</mi><mo>−</mo><msub><mi>θ</mi><mn>2</mn></msub><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>≤</mo><mn>1</mn></math></span></span><script type="math/tex" id="MathJax-Element-2">(x-\theta_1)^2+(y-\theta_2)^2 \leq 1</script></li>
+</ul>
+<p class="center"><img src="./lecture-1_files/l01-blobs-circle.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Basic Concepts</h2>
+        
+<h3>Hypothesis class</h3>
+<ul><li>Set of all hypotheses</li>
+</ul>
+<h3> Model</h3>
+<ul><li>Represents the set of hypotheses (with parameters)</li>
+</ul>
+<h3> Hypothesis</h3>
+<ul><li>One element of the hypothesis class set</li>
+<li>One instance of the Model (e.g. instantiating parameters)</li>
+<ul><li>One line: <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-3-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;&amp;#x03B8;&lt;/mi&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/msub&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mspace width=&quot;2em&quot; /&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;&amp;#x2264;&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-31" role="math" style="width: 8.402em; display: inline-block;"><span style="display: inline-block; position: relative; width: 7.002em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.368em, 1006.97em, 2.468em, -999.998em); top: -2.165em; left: 0.002em;"><span class="mrow" id="MathJax-Span-32"><span class="msubsup" id="MathJax-Span-33"><span style="display: inline-block; position: relative; width: 0.902em; height: 0px;"><span style="position: absolute; clip: rect(3.202em, 1000.47em, 4.102em, -999.998em); top: -3.998em; left: 0.002em;"><span class="mi" id="MathJax-Span-34" style="font-family: MathJax_Math-italic;">θ</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span><span style="position: absolute; top: -3.832em; left: 0.468em;"><span class="mn" id="MathJax-Span-35" style="font-size: 70.7%; font-family: MathJax_Main;">1</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span></span></span><span class="mo" id="MathJax-Span-36" style="font-family: MathJax_Main; padding-left: 0.268em;">=</span><span class="mn" id="MathJax-Span-37" style="font-family: MathJax_Main; padding-left: 0.268em;">0</span><span class="mspace" id="MathJax-Span-38" style="height: 0.002em; vertical-align: 0.002em; width: 2.002em; display: inline-block; overflow: hidden;"></span><span class="mi" id="MathJax-Span-39" style="font-family: MathJax_Math-italic;">y<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.002em;"></span></span><span class="mo" id="MathJax-Span-40" style="font-family: MathJax_Main; padding-left: 0.268em;">≤</span><span class="mn" id="MathJax-Span-41" style="font-family: MathJax_Main; padding-left: 0.268em;">0</span></span><span style="display: inline-block; width: 0px; height: 2.168em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.278em; border-left: 0px solid; width: 0px; height: 1.162em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>θ</mi><mn>1</mn></msub><mo>=</mo><mn>0</mn><mspace width="2em"></mspace><mi>y</mi><mo>≤</mo><mn>0</mn></math></span></span><script type="math/tex" id="MathJax-Element-3">\theta_1=0 \qquad y \leq 0</script></li>
+<li>One circle: <span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax" id="MathJax-Element-4-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;&amp;#x03B8;&lt;/mi&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/msub&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;&amp;#x03B8;&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msub&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mo&gt;&amp;#x2212;&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mspace width=&quot;2em&quot; /&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;msup&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;msup&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;mo&gt;&amp;#x2264;&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/math&gt;" role="presentation" style="position: relative;"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-42" role="math" style="width: 21.335em; display: inline-block;"><span style="display: inline-block; position: relative; width: 17.768em; height: 0px; font-size: 120%;"><span style="position: absolute; clip: rect(1.235em, 1017.7em, 2.535em, -999.998em); top: -2.165em; left: 0.002em;"><span class="mrow" id="MathJax-Span-43"><span class="msubsup" id="MathJax-Span-44"><span style="display: inline-block; position: relative; width: 0.902em; height: 0px;"><span style="position: absolute; clip: rect(3.202em, 1000.47em, 4.102em, -999.998em); top: -3.998em; left: 0.002em;"><span class="mi" id="MathJax-Span-45" style="font-family: MathJax_Math-italic;">θ</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span><span style="position: absolute; top: -3.832em; left: 0.468em;"><span class="mn" id="MathJax-Span-46" style="font-size: 70.7%; font-family: MathJax_Main;">1</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span></span></span><span class="mo" id="MathJax-Span-47" style="font-family: MathJax_Main; padding-left: 0.268em;">=</span><span class="msubsup" id="MathJax-Span-48" style="padding-left: 0.268em;"><span style="display: inline-block; position: relative; width: 0.902em; height: 0px;"><span style="position: absolute; clip: rect(3.202em, 1000.47em, 4.102em, -999.998em); top: -3.998em; left: 0.002em;"><span class="mi" id="MathJax-Span-49" style="font-family: MathJax_Math-italic;">θ</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span><span style="position: absolute; top: -3.832em; left: 0.468em;"><span class="mn" id="MathJax-Span-50" style="font-size: 70.7%; font-family: MathJax_Main;">2</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span></span></span><span class="mo" id="MathJax-Span-51" style="font-family: MathJax_Main; padding-left: 0.268em;">=</span><span class="mo" id="MathJax-Span-52" style="font-family: MathJax_Main; padding-left: 0.268em;">−</span><span class="mn" id="MathJax-Span-53" style="font-family: MathJax_Main;">1</span><span class="mspace" id="MathJax-Span-54" style="height: 0.002em; vertical-align: 0.002em; width: 2.002em; display: inline-block; overflow: hidden;"></span><span class="mo" id="MathJax-Span-55" style="font-family: MathJax_Main;">(</span><span class="mi" id="MathJax-Span-56" style="font-family: MathJax_Math-italic;">x</span><span class="mo" id="MathJax-Span-57" style="font-family: MathJax_Main; padding-left: 0.235em;">+</span><span class="mn" id="MathJax-Span-58" style="font-family: MathJax_Main; padding-left: 0.235em;">1</span><span class="msubsup" id="MathJax-Span-59"><span style="display: inline-block; position: relative; width: 0.835em; height: 0px;"><span style="position: absolute; clip: rect(3.168em, 1000.3em, 4.368em, -999.998em); top: -3.998em; left: 0.002em;"><span class="mo" id="MathJax-Span-60" style="font-family: MathJax_Main;">)</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span><span style="position: absolute; top: -4.365em; left: 0.402em;"><span class="mn" id="MathJax-Span-61" style="font-size: 70.7%; font-family: MathJax_Main;">2</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span></span></span><span class="mo" id="MathJax-Span-62" style="font-family: MathJax_Main; padding-left: 0.235em;">+</span><span class="mo" id="MathJax-Span-63" style="font-family: MathJax_Main; padding-left: 0.235em;">(</span><span class="mi" id="MathJax-Span-64" style="font-family: MathJax_Math-italic;">y<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.002em;"></span></span><span class="mo" id="MathJax-Span-65" style="font-family: MathJax_Main; padding-left: 0.235em;">+</span><span class="mn" id="MathJax-Span-66" style="font-family: MathJax_Main; padding-left: 0.235em;">1</span><span class="msubsup" id="MathJax-Span-67"><span style="display: inline-block; position: relative; width: 0.835em; height: 0px;"><span style="position: absolute; clip: rect(3.168em, 1000.3em, 4.368em, -999.998em); top: -3.998em; left: 0.002em;"><span class="mo" id="MathJax-Span-68" style="font-family: MathJax_Main;">)</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span><span style="position: absolute; top: -4.365em; left: 0.402em;"><span class="mn" id="MathJax-Span-69" style="font-size: 70.7%; font-family: MathJax_Main;">2</span><span style="display: inline-block; width: 0px; height: 4.002em;"></span></span></span></span><span class="mo" id="MathJax-Span-70" style="font-family: MathJax_Main; padding-left: 0.268em;">≤</span><span class="mn" id="MathJax-Span-71" style="font-family: MathJax_Main; padding-left: 0.268em;">1</span></span><span style="display: inline-block; width: 0px; height: 2.168em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.318em; border-left: 0px solid; width: 0px; height: 1.402em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>θ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>θ</mi><mn>2</mn></msub><mo>=</mo><mo>−</mo><mn>1</mn><mspace width="2em"></mspace><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false">(</mo><mi>y</mi><mo>+</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>≤</mo><mn>1</mn></math></span></span><script type="math/tex" id="MathJax-Element-4">\theta_1=\theta_2= -1 \qquad (x + 1)^2 + (y + 1)^2 \leq 1</script></li></ul>
+</ul>
+<h3> Goal: find the best hypothesis</h3>
+
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Basic Concepts</h2>
+        
+<h3>Inductive Bias</h3>
+<ul><li>We are biased by what we assume from the start.</li>
+<ul><li>Hypothesis class</li>
+</ul><li>But we must assume something.</li>
+<ul><li>we cannot proceed without a hypothesis class</li>
+</ul><li>There is no learning without inductive bias.</li>
+<ul><li>Without inductive bias it is not possible to extrapolate from known data to unknown events (will gravity still work tomorrow?)</li>
+</ul><li>Since we want to infer something outside known data we must assume some constraints</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Introduction</h2>
+					<h1>Machine learning problems</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>ML Problems</h2>
+        
+<h3>Four basic kinds of ML problems</h3>
+<ul><li>Unsupervised learning</li>
+<ul><li>All data is unlabelled</li>
+<li>Find structure in data</li>
+</ul></ul>
+<p class="center"><img src="./lecture-1_files/l01-unsupervised.png" height="100"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>ML Problems</h2>
+        <ul><li>Example: clustering images</li>
+</ul>
+<p class="center"><img src="./lecture-1_files/l01-pluto.png" height="470"></p>
+
+<p class="center" style="margin-top:-20px;"><small>Group searches with features from image and HTML (Cai et al, Clustering of WWW Image Search Results, 2004)
+
+</small></p>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>ML Problems</h2>
+        
+<h3>Four basic kinds of ML problems</h3>
+<ul><li>Unsupervised learning</li>
+<ul><li>Data is unlabelled</li>
+<li>Find structure in data</li>
+<li>Allows us to obtain new features from the data</li>
+<li>Can be used as a step in broader learning tasks</li>
+<ul><li>(preprocessing, visualization, deep learning)</li>
+
+</ul></ul></ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>ML Problems</h2>
+        
+<h3>Four basic kinds of ML problems</h3>
+<ul><li>Supervised learning</li>
+<ul><li>Training data is labelled</li>
+<li>Predict value correctly</li>
+</ul></ul>
+<p class="center"><img src="./lecture-1_files/l01-supervised.png" height="250"></p>
+<ul><li>Continuous values: Regression</li>
+<li>Discrete classes: Classification</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>ML Problems</h2>
+        
+<h3>Supervised learning</h3>
+<ul><li>Example: face identification</li>
+</ul>
+<p class="center"><img src="./lecture-1_files/l01-faces.png" height="400"></p>
+
+<p class="center" style="margin-top:-20px;"><small>Valenti et al, Machine Learning Techniques for Face Analysis, 2008
+
+</small></p>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>ML Problems</h2>
+        
+<h3>Four basic kinds of ML problems</h3>
+<ul><li>Unsupervised learning</li>
+<li>Supervised learning</li>
+<li>Reinforcement learning</li>
+<ul><li>Optimize some output</li>
+<li>But no direct feedback for each case</li>
+</ul></ul>
+<p class="center"><img src="./lecture-1_files/l01-reinforcement.png" height="240"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>ML Problems</h2>
+        
+<h3>Reinforcement learning</h3>
+<ul><li>Optimize some output</li>
+<li>But no direct feedback for each case</li>
+</ul>
+<h3>Examples</h3>
+<ul><li>Learn to play a game</li>
+<ul><li>Must learn to predict cost and benefit of each move.</li>
+<li>But can only know final result at the end of the game.</li>
+</ul><li>Robotics: locomotion, manipulation</li>
+<li>Control of autonomous vehicles</li>
+<li>Operations research: pricing, marketing, routing</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>ML Problems</h2>
+        
+<h3>Four basic kinds of ML problems</h3>
+<ul><li>Unsupervised learning</li>
+<li>Supervised learning</li>
+<li>Reinforcement learning</li>
+<li>Semi-supervised learning</li>
+<ul><li>Some data labelled, most unlabelled</li>
+<li>Mixes the two approaches</li>
+<li>Structure of unlabelled data helps choose hypothesis</li>
+
+</ul></ul>
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>ML Problems</h2>
+        
+<h3>Four basic kinds of ML problems</h3>
+<ul><li>Unsupervised learning</li>
+<li>Supervised learning</li>
+<li>Reinforcement learning</li>
+<li>Semi-supervised learning</li>
+</ul>
+<h3>Our focus in this course:</h3>
+<ul><li>Supervised learning</li>
+<li>Unsupervised learning</li>
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Introduction</h2>
+					<h1>Course Goals</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Course Goals</h2>
+        
+<h3>Objectives for this course</h3>
+<ul><li>Understand the foundations of ML problems and solutions</li>
+<li>Experience with useful ML techniques and applications</li>
+<li>Learn to understand the literature</li>
+<li>Learn to understand the mathematical formulations</li>
+</ul>
+<h3>Course outline</h3>
+<ul><li>Introduction and Supervised Learning</li>
+<li>Regression, Classification</li>
+<li>Learning Theory</li>
+<li>Unsupervised Learning</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Introduction</h2>
+					<h1>Summary</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>1. Introduction</h2>
+        
+<h3>Summary</h3>
+<ul><li>Learn from data, without explicit rules</li>
+<li>Hypothesis class, model and hypothesis</li>
+<li>Inductive bias and learning</li>
+<li>Supervised, unsupervised, reinforcement, semi-supervised</li>
+</ul>
+<h3>Further reading</h3>
+<ul><li>Alpaydin, Chapter 1</li>
+<li>Mitchell, Chapter 1</li>
+<li>Marsland, Sections 1.1 through 1.4.</li>
+</ul>
+				
+    </section>
+    
+            
+        </div>
+
+		<script src="./lecture-1_files/head.min.js.download"></script>
+		<script src="./lecture-1_files/reveal.js.download"></script>
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false,
+				progress: false,
+				history: true,
+				center: false,
+				margin: 0,
+				width: 1024,
+				height: 768,
+				//width: '100%',
+				//height: '100%',
+                 touch: false,
+	            minScale: 1.0,
+				maxScale: 1.0,
+				slideNumber: false,
+
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: '../../reveallib/reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../../reveallib/reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../reveallib/reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../reveallib/reveal/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../../reveallib/reveal/plugin/zoom-js/zoom.js', async: true },
+					{ src: '../../reveallib/reveal/plugin/math/math.js', async: true },
+					{ src: '../../reveallib/reveal/plugin/notes/notes.js', async: true }
+				]
+			});
+         Reveal.configure({
+                keyboard: {
+                13: 'next', // go to the next slide when the ENTER key is pressed
+                40: 'next',
+                38: 'prev'
+                }
+            });       
+		</script><div class="backgrounds"><div class="slide-background present" data-background-hash="null100% 100%img/first.pngnullnullnullnullnullslide" data-background-transition="slide" data-loaded="true" style="background-size: 100% 100%; display: block; background-image: url(&quot;img/first.png&quot;);"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" data-loaded="true" style="background-size: 100% 100%; display: block; background-image: url(&quot;img/slide1.png&quot;);"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" data-loaded="true" style="background-size: 100% 100%; display: block; background-image: url(&quot;img/transition.png&quot;);"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div></div><div class="progress" style="display: none;"><span></span></div><aside class="controls" style="display: none;"><div class="navigate-left"></div><div class="navigate-right enabled"></div><div class="navigate-up"></div><div class="navigate-down"></div></aside><div class="slide-number"></div><div class="pause-overlay"></div><div id="aria-status-div" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">
+                  
+				Aprendizagem Automática
+					1 - Introduction				
+				Ludwig Krippahl
+                
+
+				
+				
+    </div>
+
+	
+
+</div><script type="text/javascript" src="./lecture-1_files/highlight.js.download"></script><script type="text/javascript" src="./lecture-1_files/zoom.js.download"></script><script type="text/javascript" src="./lecture-1_files/math.js.download"></script><script type="text/javascript" src="./lecture-1_files/notes.js.download"></script><div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; padding: 0px; border: 0px; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-family: MathJax_Main, sans-serif;"></div></div></body></html>
