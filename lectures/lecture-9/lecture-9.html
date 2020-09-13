@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)http://aa.ssdi.di.fct.unl.pt/Lectures/lec/09-svm-1.html#/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+
+		<title>AA-09</title>
+
+		<meta name="description" content="Lecture slides, Python">
+		<meta name="author" content="Ludwig Krippahl">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = 'css/aa.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );		
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';			
+			link.href = '../../reveallib/reveal/lib/css/atelier-dune-light.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );					
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = 'css/pdf.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );									
+			} else {
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = '../../reveallib/reveal/css/reveal.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );					
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';
+			link.href = 'css/aa.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );		
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';			
+			link.type = 'text/css';			
+			link.href = '../../reveallib/reveal/lib/css/atelier-dune-light.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );												
+			}
+		</script><link rel="stylesheet" type="text/css" href="./lecture-9_files/reveal.css"><link rel="stylesheet" type="text/css" href="./lecture-9_files/aa.css"><link rel="stylesheet" type="text/css" href="./lecture-9_files/atelier-dune-light.css">
+  	</head>
+
+	<body>
+
+		<div class="reveal slide" role="application" data-transition-speed="default" data-background-transition="fade">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides" style="width: 1024px; height: 768px;">
+            
+            
+
+	<section data-transition="slide" data-background-image="img/first.png" data-background-size="100% 100%" data-background-transition="slide" class="present" style="display: block;">
+                  <!--<sn></sn>-->
+				<h2 class="right">Aprendizagem Automática</h2>
+					<h1>Support Vector Machines, part 1</h1>				
+				<div class="author"><h3>Ludwig Krippahl</h3></div>
+                
+
+				<!--<div style="border:solid black; margin:0px; position:fixed; left:0px; top:0px; width:1024px;height:768px"></div>-->
+				
+    </section>
+	<section data-transition="slide-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: block;">
+                  <sn></sn>
+				<h2>Support Vector Machines</h2>
+        
+<h3>Summary</h3>
+<ul><li>Maximum Margin Classifier</li>
+<li>Support Vectors</li>
+<li>Support Vector Machine</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: block;">
+                    <sn></sn>				
+                    <h2 class="right">Support Vector Machines</h2>
+					<h1>Maximum Margin Classifier</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        <ul><li>Example: cancer and gene activity</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-cancerdata.png" height="500"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        <ul><li>First approach (didn't work) $E = \sum_{j=1}^{N} \left(y(\vec{x_j}) - t_j\right) ^2$</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-cancerplot_quad.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Logistic Regression:minimize</h3>
+		$$- \sum_{n=1}^{N} \left[ t_n \ln g_n + (1-t_n) \ln (1-g_n) \right]$$
+
+<p class="center"><img src="./lecture-9_files/L09-cancerplot_log_single.png" height="400"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Logistic Regression</h3>
+<ul><li>Minimize</li>
+		$$- \sum_{n=1}^{N} \left[ t_n \ln g_n + (1-t_n) \ln (1-g_n) \right]$$
+		$$g_n = \frac{1}{1+e^{-(\vec{w}^T\vec{x_n}+w_0)}}$$
+<ul><li>This makes the function constant away from the frontier, allowing the frontier to be placed in different points.</li>
+</ul><li>Problem: increasing the magnitude of $\widetilde{w}$ increases the steepness of the logistic function</li>
+
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Logistic Regression</h3>
+<ul><li>Placing the frontier:</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-logplot.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Logistic Regression</h3>
+<ul><li>Placing the frontier:</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-cancerplot_log.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Logistic Regression</h3>
+<ul><li>Without regularization, more susceptible to overfitting</li>
+<li>With regularization, $\widetilde{w}$ can be forced to be smaller.</li>
+<li>This places the frontier farther from the closest points.</li>
+<li>In other words, we want to maximize the margin.</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Logistic Regression</h3>
+<ul><li>With regularization:</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-logplot_reg.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Logistic Regression</h3>
+<ul><li>With regularization:</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-cancerplot_log_reg.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Logistic Regression</h3>
+<ul><li>Regularization reduces overfitting by increasing the margin</li>
+<li>However, it does so indirectly, by changing the cost function.</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+def log_cost(theta,X,y,C):
+    coefs = np.zeros((len(theta),1))
+    coefs[:,0] = theta
+    sig_vals = logistic(np.dot(X,coefs))
+    log_1 = np.log(sig_vals)*y
+    log_0 = np.log(1-sig_vals)*(1-y)
+    return -np.mean(log_0+log_1)+np.sum(coefs**2)/C
+		</code></pre><ul><li>The regularization term <code>np.sum(coefs**2)/C</code></li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Maximum margin classifier</h3>
+<ul><li>A <highlt>Margin Classifier</highlt> is a classifier that provides a distance to the discriminant</li>
+<ul><li>The hyperplane separating the classes in a linear classifier.</li>
+</ul><li>A <highlt>Maximum Margin Classifier</highlt> finds the maximum-margin discriminant, maximizing the distance to the nearest points to separate.</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Maximum margin classifier</h3>
+<ul><li>Maximizing distance to nearest points reduces overfitting by constraining the frontier</li>
+<li>Margin examples are Support Vectors</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-max_margins.png" height="350"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>(Trying to) implement maximum margin classifier</h3>
+<ul><li>Signed distance to hyperplane:</li>
+		$$r = \frac{\vec{w}^Tx+w_0}{||\vec{w}||}$$
+<li>&nbsp;$\vec{w}^Tx+w_0$, positive or negative on either side</li>
+<li>&nbsp;$||\vec{w}||$ is the norm of the vector</li>
+</ul>
+<h3>Maximizing the margins:</h3>
+<ul><li>Maximize the min. product of signed distance by class</li>
+		$$\underset{\vec{w}, w_0} {\mathrm{argmax}} \left( \underset{j} {\mathrm{min}} \frac{y_j(\vec{w}^Tx_j+w_0)}{||\vec{w}||} \right)$$
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Maximum margin classifier</h3>
+<ul><li>Signed distance to hyperplane</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+def closest_dist(ws, Xs, Ys):
+    coefs = np.zeros((len(ws)-1,1))
+    coefs[:,0] = ws.flatten()[:-1]
+    dists = np.dot(Xs,coefs) + ws[-1]
+    norm = np.sqrt(np.sum(coefs**2))
+    return -np.min(dists * Ys / norm)
+
+# load data
+ws = np.random.rand(3)
+sol =  minimize(closest_dist, ws, args = (Xs,Ys))
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Maximum margin classifier</h3>
+<ul><li>Unfortunately, it doesn't work...</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-quad-line.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Maximum Margin</h2>
+        
+<h3>Maximum margin classifier</h3>
+<ul><li>The objective function does not have a continuous derivative</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-dist_plane.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">SVM 1</h2>
+					<h1>Support Vector Machine</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Support Vector Machine</h2>
+        
+<h3>The problem</h3>
+<ul><li>Basic idea is simple: maximize margin</li>
+<li>But difficult to compute because of discontinuity</li>
+<ul><li>(Machine learning depends on numeric methods)</li>
+</ul></ul>
+<h3>The solution</h3>
+<ul><li>Lots of equations ahead, but necessary to understand some important properties</li>
+<ul><li>(not to memorize)</li>
+
+</ul></ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Support Vector Machine</h2>
+        <ul><li>The normalized distance is invariant to scaling:</li>
+		$$\frac{y_n(w^Tx_n+w_0)}{||w||}=\displaystyle\frac{y_n(\beta \vec{w}^Tx_n+\beta w_0)}{\beta ||\vec{w}||}$$
+<li>So we can impose a margin of at least 1 by scaling $\vec{w}$ and $w_0$:</li>
+		$$y_n(\vec{w}^Tx_n+w_0)\ge 1, \forall n \in N$$
+<li>Now we find, subject to the constraint above:</li>
+		$$\underset{\vec{w}, w_0} {\mathrm{argmax}} \left( \underset{j} {\mathrm{min}} \frac{y_j(\vec{w}^Tx_j+w_0)}{||\vec{w}||} \right)=\underset{\vec{w},w_0}{\operatorname{arg\,min}}\frac{1}{2}||\vec{w}||^2$$
+<ul><li>The vector $w_0$ is determined by the constraint</li>
+</ul><li>Distance to margin can be increased by shortening $\vec{w}$, respecting the constraint</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Support Vector Machine</h2>
+        
+<h3>Constrained optimization problem:</h3>
+		$$\underset{\vec{w},w_0}{\operatorname{arg\,min}}\frac{1}{2}||\vec{w}||^2$$
+		$$y_n(\vec{w}^Tx_n+w_0)\ge 1, \forall n \in N$$
+<ul><li>We can solve this with the method of Lagrange multipliers</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Constrained Optimization</h2>
+        <ul><li>Lagrange multipliers, example:</li>
+		$$\underset{x,y}{\operatorname{arg\,max}}\, ( 1- x^2 - y^2 )$$
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-lagrange-1.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Constrained Optimization</h2>
+        <ul><li>Lagrange multipliers, example:</li>
+		$$\underset{x,y}{\operatorname{arg\,max}}\, ( 1- x^2 - y^2 )\, \text{s.t.} \, x - y - 1 = 0$$
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-lagrange-line.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Constrained Optimization</h2>
+        <ul><li>Along the line $x - y - 1 = 0$, at the maximum the function $1- x^2 - y^2$ cannot increase (must be parallel to contour line)</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-lagrange-contours.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Constrained Optimization</h2>
+        <ul><li>Since $g(x,y) = 0$ is a contour line of $g$,if $f(x,y)$ is maximum s.t. $g(x,y)=0$, then the contour line of $f(x,y)$ is parallel to the contour line of $g(x,y)$</li>
+<li>The gradients are parallel too, since they are perpendicular to the contour line (the negative sign is conventional):</li>
+		$$\vec\nabla_{x,y}f(x,y) = -\alpha \vec\nabla_{x,y}g(x,y)$$
+<li>We combine these into the Lagrangian</li>
+		$$\mathcal{L}(x,y,\alpha) = f(x,y) + \alpha g(x,y)$$
+<li>Solve:$$ \vec\nabla_{x,y,\alpha} \mathcal{L}(x,y,\alpha)=0$$</li>
+<ul><li>where $\alpha$ is the the lagrangian multiplier</li>
+</ul><li>Same idea for inequality, with $h(x,y)\leq 0$</li>
+
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Constrained Optimization</h2>
+        
+<h3>Back to our example, solve for all derivatives at zero</h3>
+
+<p class="center"><img src="./lecture-9_files/L09-lagrange-contours.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Constrained Optimization</h2>
+        <ul><li>Solve for derivatives at zero</li>
+		$$\vec\nabla_{x,y,\alpha}\left(  1- x^2 - y^2 + \alpha(x - y - 1) \right) = 0$$
+		$$\frac{\delta\mathcal{L}}{\delta x} = -2x + \alpha = 0$$
+		$$\frac{\delta\mathcal{L}}{\delta y} = -2y - \alpha = 0$$
+		$$\frac{\delta\mathcal{L}}{\delta \alpha} = x - y - 1 = 0$$
+<li>Solution: $\left\{ 0.5,-0.5 \right\} $ (Critical point of the lagrangian)</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Constrained Optimization</h2>
+        <ul><li>Solution $\left\{ 0.5,-0.5 \right\} $:</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-lagrange-contours.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Support Vector Machine</h2>
+        
+<h3>Applying the same method to this problem:</h3>
+  $$\underset{w,w_0}{\operatorname{arg\,min}}\frac{1}{2}||\vec{w}||^2$$
+		$$y_n(\vec{w}^T\vec{x}_n+w_0)\ge 1 \Leftrightarrow -y_n(\vec{w}^T\vec{x}_n+w_0)+1 \leq 0$$
+<ul><li>We write the Lagrangian:</li>
+		$$\mathcal{L}(\vec{w},w_0,\vec{\alpha})=\frac{1}{2}||\vec{w}||^2 - \sum\limits_{n=1}^{N} \alpha_n \left(y_n(\vec{w}^Tx_n+w_0) - 1\right)$$
+<li>At the critical points, derivatives w.r.t. $\vec{w}$ and $w_0$ are 0:</li>
+		$$\frac{\delta \mathcal{L}}{\delta \vec{w}}=0 \Leftrightarrow	\vec{w}=\sum\limits_{n=1}^{N} \alpha_n y_n \vec{x}_n$$
+		$$\frac{\delta \mathcal{L}}{\delta w_0}=0 \Leftrightarrow	\sum\limits_{n=1}^{N} \alpha_n y_n=0$$
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Support Vector Machine</h2>
+        
+<h3>Replacing these here:</h3>
+		$$\mathcal{L}(\vec{w},w_0,\vec{\alpha})=\frac{1}{2}||\vec{w}||^2 - \sum\limits_{n=1}^{N} \alpha_n \left(y_n(\vec{w}^T\vec{x}_n+w_0) - 1\right)$$
+<ul><li>We get the dual representation of the optimization problem:</li>
+		$$\underset{\vec{\alpha}}{\operatorname{arg\,max}}	\sum\limits_{n=1}^N \alpha_n -\frac{1}{2} \sum\limits_{n=1}^{N}\sum\limits_{m=1}^{N} \alpha_n \alpha_m y_n y_m \vec{x}_n^T \vec{x}_m $$
+<li>Subject to the constraints</li>
+		$$\sum\limits_{n=1}^{N} \alpha_n y_n=0 \qquad \alpha_n \ge 0$$
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Support Vector Machine</h2>
+        
+<h3>Intuition:</h3>
+		$$\underset{\vec{\alpha}}{\operatorname{arg\,max}}	\sum\limits_{n=1}^N \alpha_n -\frac{1}{2} \sum\limits_{n=1}^{N}\sum\limits_{m=1}^{N} \alpha_n \alpha_m y_n y_m \vec{x}_n^T \vec{x}_m $$
+		$$\sum\limits_{n=1}^{N} \alpha_n y_n=0 \qquad \alpha_n \ge 0$$
+<ul><li>Points surrounded by same class neighbours, $\alpha$ = 0</li>
+<li>Points near neighbours of the other class, $\alpha$ &gt; 0</li>
+<li>This can be solved with quadratic programming</li>
+
+</ul>
+				
+    </section>
+    
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Implementing an SVM</h2>
+        
+<h3>Implementing a linear SVM with SciPy optimize</h3>
+<ul><li>(you don't have to do this; just to illustrate the details)</li>
+		$$\underset{\vec{\alpha}}{\operatorname{arg\,max}}	\sum\limits_{n=1}^N \alpha_n -\frac{1}{2} \sum\limits_{n=1}^{N}\sum\limits_{m=1}^{N} \alpha_n \alpha_m y_n y_m \vec{x}_n^T \vec{x}_m $$
+		$$\sum\limits_{n=1}^{N} \alpha_n y_n=0 \qquad \alpha_n \ge 0$$
+		$$H = \sum\limits_{n=1}^{N}\sum\limits_{m=1}^{N} y_n y_m \vec{x}_n^T \vec{x}_m $$
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+def H_matrix(X,Y):
+    H = np.zeros((X.shape[0],X.shape[0]))
+    for row in range(X.shape[0]):
+        for col in range(X.shape[0]):
+            H[row,col] = np.dot(X[row,:],X[col,:])*Y[row]*Y[col]
+    return H
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Implementing an SVM</h2>
+        
+<h3>Implementing a linear SVM with SciPy optimize</h3>
+		$$\underset{\vec{\alpha}}{\operatorname{arg\,max}}	\sum\limits_{n=1}^N \alpha_n -\frac{1}{2} \sum\limits_{n=1}^{N}\sum\limits_{m=1}^{N} \alpha_n \alpha_m y_n y_m \vec{x}_n^T \vec{x}_m $$
+		$$\sum\limits_{n=1}^{N} \alpha_n y_n=0 \qquad \alpha_n \ge 0$$
+<ul><li>Loss function (to minimize)</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+def loss(alphas):
+    return 0.5 * np.dot(alphas.T, np.dot(H, alphas)) - np.sum(alphas)
+		</code></pre><ul><li>The Jacobian (derivatives)</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+def jac(alphas):
+    return np.dot(alphas.T,H)-np.ones(alphas.shape[0])
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Implementing an SVM</h2>
+        <ul><li>Load the data (Xs, Ys)</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-cancerdata.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Implementing an SVM</h2>
+        <ul><li>Minimize the function, with constraints, using Sequential Least Squares Programming</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+H = H_matrix(Xs,Ys)
+A = Ys[:,0] # sum of alphas is zero
+cons = {'type':'eq',
+        'fun':lambda alphas: np.dot(A,alphas),
+        'jac':lambda alphas: A}
+bounds = [(0,None)]*Xs.shape[0] #alpha&gt;=0
+x0 = np.random.rand(Xs.shape[0])
+sol =  minimize(loss, x0, jac=jac, constraints=cons,
+                method='SLSQP', bounds = bounds)
+		</code></pre><ul><li>Identify the support vectors</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs console">
+In : svs = sol.x&gt;0.001
+In : print(svs)
+[False False False False False False  True False False False False False
+ False False False False False False False False False False False  True
+ False False False False False False False False False False False  True]
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Implementing an SVM</h2>
+        <ul><li>Support vectors</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-cancerplot_svm.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="none-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Implementing an SVM</h2>
+        <ul><li>Compute hyperplane:</li>
+		$$\vec{w} = \sum\limits_{n=1}^{N}\alpha_n y_n\vec{x}_n$$
+<li>&nbsp;$y_n (\vec{w}^T \vec{x}_n +w_0) = 1$ for support vectors, so $w_0$ can be computed from the average of $y_n - \vec{w}^T \vec{x}_n$ over the support vectors.</li>
+</ul>
+    <pre><code data-trim="" contenteditable="" class="python hljs">
+def svm_coefs(X,Y,alphas):
+    w = np.sum(alphas*Y*X.T,axis = 1)[:,np.newaxis]
+    w0 = np.mean(Y-np.dot(X,w))
+    coefs = np.zeros(len(w)+1)
+    coefs[-1] = w0
+    coefs[:-1] = w.flatten()
+    return coefs
+
+coefs = svm_coefs(Xs[svs,:],Ys[svs,0],sol.x[svs])
+		</code></pre>
+				
+    </section>
+    
+	<section data-transition="none-in slide-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="none-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>Implementing an SVM</h2>
+        <ul><li>Support vectors and frontier</li>
+</ul>
+<p class="center"><img src="./lecture-9_files/L09-svm-line.png" height="450"></p>
+
+				
+    </section>
+    
+	<section data-transition="slide-in slide-out" data-background-image="img/transition.png" data-background-size="100% 100%" data-background-transition="slide-in slide-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <sn></sn>				
+                    <h2 class="right">Aprendizagem Automática</h2>
+					<h1>Summary</h1>				
+            
+        </section>
+        
+	<section data-transition="slide-in none-out" data-background-image="img/slide1.png" data-background-size="100% 100%" data-background-transition="slide-in none-out" hidden="" aria-hidden="true" class="future" style="display: none;">
+                  <sn></sn>
+				<h2>SVM-1</h2>
+        
+<h3>Summary</h3>
+<ul><li>Maximum margin (reduce overfiting)</li>
+<li>Constrained optimization to solve the problem</li>
+<li>SVM: maximize for $\vec\alpha$</li>
+<li>SVM: H matrix (inner products)</li>
+<li>Support Vectors to determine the frontier</li>
+
+</ul>
+<h3>Further reading</h3>
+<ul><li>Alpaydin, Sections 13.1 and 13.2</li>
+<li>Marsland, Section 5.1</li>
+</ul>
+				
+    </section>
+    
+            
+        </div>
+
+		<script src="./lecture-9_files/head.min.js.download"></script>
+		<script src="./lecture-9_files/reveal.js.download"></script>
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false,
+				progress: false,
+				history: true,
+				center: false,
+				margin: 0,
+				width: 1024,
+				height: 768,
+				//width: '100%',
+				//height: '100%',
+                 touch: false,
+	            minScale: 1.0,
+				maxScale: 1.0,
+				slideNumber: false,
+
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: '../../reveallib/reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../../reveallib/reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../reveallib/reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../../reveallib/reveal/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../../reveallib/reveal/plugin/zoom-js/zoom.js', async: true },
+					{ src: '../../reveallib/reveal/plugin/math/math.js', async: true },
+					{ src: '../../reveallib/reveal/plugin/notes/notes.js', async: true }
+				]
+			});
+         Reveal.configure({
+                keyboard: {
+                13: 'next', // go to the next slide when the ENTER key is pressed
+                40: 'next',
+                38: 'prev'
+                }
+            });       
+		</script><div class="backgrounds"><div class="slide-background present" data-background-hash="null100% 100%img/first.pngnullnullnullnullnullslide" data-background-transition="slide" data-loaded="true" style="background-size: 100% 100%; display: block; background-image: url(&quot;img/first.png&quot;);"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" data-loaded="true" style="background-size: 100% 100%; display: block; background-image: url(&quot;img/slide1.png&quot;);"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" data-loaded="true" style="background-size: 100% 100%; display: block; background-image: url(&quot;img/transition.png&quot;);"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in none-out" data-background-transition="none-in none-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullnone-in slide-out" data-background-transition="none-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/transition.pngnullnullnullnullnullslide-in slide-out" data-background-transition="slide-in slide-out" style="background-size: 100% 100%; display: none;"></div><div class="slide-background future" data-background-hash="null100% 100%img/slide1.pngnullnullnullnullnullslide-in none-out" data-background-transition="slide-in none-out" style="background-size: 100% 100%; display: none;"></div></div><div class="progress" style="display: none;"><span></span></div><aside class="controls" style="display: none;"><div class="navigate-left"></div><div class="navigate-right enabled"></div><div class="navigate-up"></div><div class="navigate-down"></div></aside><div class="slide-number"></div><div class="pause-overlay"></div><div id="aria-status-div" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">
+                  
+				Aprendizagem Automática
+					Support Vector Machines, part 1				
+				Ludwig Krippahl
+                
+
+				
+				
+    </div>
+
+	
+
+</div><script type="text/javascript" src="./lecture-9_files/highlight.js.download"></script><script type="text/javascript" src="./lecture-9_files/zoom.js.download"></script><script type="text/javascript" src="./lecture-9_files/math.js.download"></script><script type="text/javascript" src="./lecture-9_files/notes.js.download"></script></body></html>
