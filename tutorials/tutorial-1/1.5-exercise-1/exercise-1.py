@@ -24,6 +24,7 @@ def load_planet_data(file_name):
 
     return np.array(rows)
 
+# Load the Planets' data, from the file
 planets_data = load_planet_data('../files/planets.csv')
 
 
