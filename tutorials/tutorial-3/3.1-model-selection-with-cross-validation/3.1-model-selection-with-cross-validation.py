@@ -8,17 +8,28 @@ Created on Thu Oct  8 09:03:32 2020
 # Import NumPy Python's Library
 import numpy as np
 
+# Import Shuffle Sub-Module,
+# from SciKit-Learn's Utils Module
 from sklearn.utils import shuffle
 
+# Import Train-Test Split Sub-Module,
+# from SciKit-Learn's Model Selection Module
 from sklearn.model_selection import train_test_split
 
+# Import Matplotlib Python's Library
+import matplotlib.pyplot as plt
 
+# Import System Python's Library
 import sys
 
+# Append the Path "../" to the System's Path
 sys.path.append('../')
 
-from files.t3_aux import *
+# Import the Poly 16 Features and the Create Plot Functions,
+# from the Customised T3_Aux Python's Library
+from files.t3_aux import poly_16features, create_plot
 
+# Load the Data, as a Matrix
 mat = np.loadtxt('../files/data.txt', delimiter=',', skiprows=0)
 
 data = shuffle(mat)
@@ -63,7 +74,7 @@ for feats in range(2,17):
     va_err = 0  
 
     ax_lims=(-3,3,-3,3)
-    plt.figure(figsize=(8,8), frameon=False)
+    plt.figure(figsize=(8,8), frameon=True)
     plt.axis(ax_lims)
       
     for tr_ix,va_ix in kf.split(Y_r,Y_r):
@@ -98,7 +109,7 @@ plt.show()
 plt.close()
     
 ax_lims=(-3,3,-3,3)
-plt.figure(figsize=(8,8), frameon=False)
+plt.figure(figsize=(8,8), frameon=True)
 plt.axis(ax_lims)
 
 for tr_ix,va_ix in kf.split(Y_r,Y_r):
@@ -113,11 +124,11 @@ plt.show()
 plt.close()
 
 
-plt.figure(figsize=(8, 8), frameon=False)
+plt.figure(figsize=(8, 8), frameon=True)
 plt.plot(tr_err_values[:,0], tr_err_values[:,1],'-', color="blue")
 plt.plot(va_err_values[:,0], va_err_values[:,1],'-', color="red")
 
-plt.axis([2,max(va_err_values[:,0]),0.00,0.10])
+plt.axis([min(va_err_values[:,0]), max(va_err_values[:,0]), min(va_err_values[:,1]), max(va_err_values[:,1])])
 plt.title('Training Error (Blue) / Cross-Validation Error (Red)')
 plt.savefig('imgs/cross-validation-error-plot.png', dpi=300)
 plt.show()
