@@ -5,7 +5,8 @@ Created on Thu Nov 12 11:56:32 2020
 @author: rubenandrebarreiro
 """
 
-# Import PyPlot Sub-Module, from Matplotlib Python's Library as plt
+# Import PyPlot Sub-Module,
+# from Matplotlib Python's Library as plt
 import matplotlib.pyplot as plt
 
 # Import read_csv Sub-Module,
